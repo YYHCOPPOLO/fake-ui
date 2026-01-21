@@ -1,7 +1,8 @@
 import type { Plugin } from 'vue'
 
-import { FakeButton } from '@fake-ui/components'
+import { FakeButton, FakeIcon } from '@fake-ui/components'
 
 export default [
-  FakeButton
+  FakeButton,
+  FakeIcon
 ] as Plugin[]

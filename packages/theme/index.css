@@ -1,1 +1,67 @@
 @import './reset.css';
+
+:root {
+  /* colors */
+  --fake-color-white: #ffffff;
+  --fake-color-black: #000000;
+  --colors: (primary: #409eff, success: #67c23a, warning: #e6a23c, danger: #f56c6c, info: #909399);
+  --fake-bg-color: #ffffff;
+  --fake-bg-color-page: #f2f3f5;
+  --fake-bg-color-overlay: #ffffff;
+  --fake-text-color-primary: #303133;
+  --fake-text-color-regular: #606266;
+  --fake-text-color-secondary: #909399;
+  --fake-text-color-placeholder: #a8abb2;
+  --fake-text-color-disabled: #c0c4cc;
+  --fake-border-color: #dcdfe6;
+  --fake-border-color-light: #e4e7ed;
+  --fake-border-color-lighter: #ebeef5;
+  --fake-border-color-extra-light: #f2f6fc;
+  --fake-border-color-dark: #d4d7de;
+  --fake-border-color-darker: #cdd0d6;
+  --fake-fill-color: #f0f2f5;
+  --fake-fill-color-light: #f5f7fa;
+  --fake-fill-color-lighter: #fafafa;
+  --fake-fill-color-extra-light: #fafcff;
+  --fake-fill-color-dark: #ebedf0;
+  --fake-fill-color-darker: #e6e8eb;
+  --fake-fill-color-blank: #ffffff;
+  
+  @each $val, $color in var(--colors) {
+    --fake-color-$(val): $(color);
+    @for $i from 3 to 9 {
+      --fake-color-$(val)-light-$(i): mix(#fff, $(color), 0.$(i));
+    }
+    --fake-color-$(val)-dark-2: mix(#000, $(color), 0.2);
+  }
+
+  /* border */
+  --fake-border-width: 1px;
+  --fake-border-style: solid;
+  --fake-border-color-hover: var(--fake-text-color-disabled);
+  --fake-border: var(--fake-border-width) var(--fake-border-style) var(--fake-border-color);
+  --fake-border-radius-base: 4px;
+  --fake-border-radius-small: 2px;
+  --fake-border-radius-round: 20px;
+  --fake-border-radius-circle: 100%;
+
+  /*font*/
+  --fake-font-size-extra-large: 20px;
+  --fake-font-size-large: 18px;
+  --fake-font-size-medium: 16px;
+  --fake-font-size-base: 14px;
+  --fake-font-size-small: 13px;
+  --fake-font-size-extra-small: 12px;
+  --fake-font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '\5fae\8f6f\96c5\9ed1', Arial, sans-serif;
+  --fake-font-weight-primary: 500;
+
+  /*disabled*/
+  --fake-disabled-bg-color: var(--fake-fill-color-light);
+  --fake-disabled-text-color: var(--fake-text-color-placeholder);
+  --fake-disabled-border-color: var(--fake-border-color-light);
+
+  /*animation*/
+  --fake-transition-duration: 0.4s;
+  --fake-transition-duration-fast: 0.2s;
+}
