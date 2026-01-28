@@ -8,6 +8,14 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    coverage: {
+      include: ['**/*.vue'],
+      exclude: [
+        '**/*.test.ts',
+        '**/*.spec.ts',
+        '**/node_modules/**',
+      ],
+    },
   },
 })
   
