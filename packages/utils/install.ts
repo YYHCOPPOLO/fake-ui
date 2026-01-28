@@ -9,7 +9,7 @@ export function installerMaker(components: Plugin[]) {
   return installer as Plugin
 }
 
-export const withInstall = <T>(component: T) => {
+export function withInstall <T>(component: T) {
   (component as SFCWithInstall<T>).install = (app: App) => {
     const name = (component as any).name
     app.component(name, component as Plugin)

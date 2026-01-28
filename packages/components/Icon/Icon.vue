@@ -28,20 +28,5 @@ const customStyles = computed(() => ({ color: props.color ?? void 0 }))
 </template>
 
 <style scoped>
-.fake-icon {
-  --fake-icon-color: inherit;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  fill: currentColor;
-  color: var(--fake-icon-color);
-  font-size: inherit;
-}
-
-@each $val in primary, info, success, warning, danger {
-  .fake-icon-$(val) {
-    --fake-icon-color: var(--fake-color-$(val));
-  }
-}
+@import './style.css';
 </style>

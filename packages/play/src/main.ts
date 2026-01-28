@@ -1,7 +1,7 @@
+import FakeUI from 'fake-ui'
 import { createApp } from 'vue'
-import './style.css'
 import App from './App.vue'
 
-import FakeUI from 'fake-ui'
+import 'fake-ui/dist/index.css'
 
 createApp(App).use(FakeUI).mount('#app')

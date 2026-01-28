@@ -2,11 +2,10 @@
   "name": "@fake-ui/workspace",
   "version": "1.0.0",
   "packageManager": "pnpm@10.27.0+sha512.72d699da16b1179c14ba9e64dc71c9a40988cbdc65c264cb0e489db7de917f20dcf4d64d8723625f2969ba52d4b7e2a1170682d9ac2a5dcaeaab732b7e16f04a",
-  "description": "",
+  "description": "vue3 + ts components lib",
   "author": "",
   "license": "ISC",
   "keywords": [],
-  "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter @fake-ui/play dev",
     "docs:dev": "pnpm --filter @fake-ui/docs dev",
@@ -14,7 +13,8 @@
     "docs:preview": "pnpm --filter @fake-ui/docs preview",
     "test": "pnpm --filter @fake-ui/components test",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "build": "pnpm --filter fake-ui build"
   },
   "dependencies": {
     "@fake-ui/components": "workspace:*",
@@ -23,7 +23,7 @@
     "@fake-ui/utils": "workspace:*",
     "fake-ui": "workspace:*",
     "lodash-es": "4.17.21",
-    "vue": "3.4.19"
+    "vue": "^3.4.19"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.7.1",
@@ -31,6 +31,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@popperjs/core": "2.11.8",
     "@storybook/addon-a11y": "^10.1.11",
     "@storybook/addon-docs": "^10.1.11",
     "@storybook/addon-onboarding": "^10.1.11",
@@ -43,8 +44,11 @@
     "@vitest/browser": "^3.0.0",
     "@vitest/coverage-v8": "^3.0.0",
     "@vue/tsconfig": "0.5.1",
+    "async-validator": "4.2.5",
     "eslint": "^9.39.2",
     "eslint-plugin-storybook": "^10.1.11",
+    "move-file-cli": "^3.0.0",
+    "npm-run-all": "^4.1.5",
     "playwright": "^1.57.0",
     "postcss-color-mix": "1.1.0",
     "postcss-each": "1.1.0",

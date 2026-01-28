@@ -9,17 +9,17 @@ const meta: Meta<typeof FakeIcon> = {
     icon: {
       control: 'select',
       options: [
-        'lucide:bell',
-        'lucide:heart',
-        'lucide:star',
-        'lucide:user',
-        'lucide:settings',
-        'lucide:search',
-        'lucide:check',
-        'lucide:x',
-        'lucide:plus',
+        'bell',
+        'heart',
+        'star',
+        'user',
+        'gear',
+        'magnifying-glass',
+        'check',
+        'xmark',
+        'plus',
       ],
-      description: '图标名称，格式: 集合:图标名',
+      description: 'FontAwesome 图标名称',
     },
     color: { control: 'color', description: '图标颜色' },
     size: { control: 'text', description: '图标尺寸' },
@@ -29,7 +29,7 @@ const meta: Meta<typeof FakeIcon> = {
 export default meta
 
 export const Default: StoryObj<typeof FakeIcon> = {
-  args: { icon: 'lucide:bell' },
+  args: { icon: 'bell' },
   render: args => ({
     components: { FakeIcon },
     setup: () => ({ args }),
@@ -38,7 +38,7 @@ export const Default: StoryObj<typeof FakeIcon> = {
 }
 
 export const Colors: StoryObj<typeof FakeIcon> = {
-  args: { icon: 'lucide:heart', color: '#ff0000' },
+  args: { icon: 'heart', color: '#ff0000' },
   render: args => ({
     components: { FakeIcon },
     setup: () => ({ args }),
@@ -47,7 +47,7 @@ export const Colors: StoryObj<typeof FakeIcon> = {
 }
 
 export const Sizes: StoryObj<typeof FakeIcon> = {
-  args: { icon: 'lucide:star', size: '2em' },
+  args: { icon: 'star', size: '2em' },
   render: args => ({
     components: { FakeIcon },
     setup: () => ({ args }),
@@ -60,15 +60,15 @@ export const Gallery: StoryObj<typeof FakeIcon> = {
     components: { FakeIcon },
     setup: () => ({
       icons: [
-        'lucide:bell',
-        'lucide:heart',
-        'lucide:star',
-        'lucide:user',
-        'lucide:settings',
-        'lucide:search',
-        'lucide:check',
-        'lucide:x',
-        'lucide:plus',
+        'bell',
+        'heart',
+        'star',
+        'user',
+        'gear',
+        'magnifying-glass',
+        'check',
+        'xmark',
+        'plus',
       ],
     }),
     template: `
@@ -107,20 +107,20 @@ export const Interactive: StoryObj<typeof FakeIcon> = {
     template: `
       <div style="display: flex; gap: 24px; padding: 16px;">
         <FakeIcon
-          icon="lucide:home"
+          icon="house"
           size="2em"
           style="cursor: pointer; transition: transform 0.2s;"
           @click="handleClick('Home')"
         />
         <FakeIcon
-          icon="lucide:heart"
+          icon="heart"
           size="2em"
           color="#ff0000"
           style="cursor: pointer; transition: transform 0.2s;"
           @click="handleClick('Heart')"
         />
         <FakeIcon
-          icon="lucide:star"
+          icon="star"
           size="2em"
           color="#f6a23c"
           style="cursor: pointer; transition: transform 0.2s;"
@@ -138,15 +138,15 @@ export const Accessibility: StoryObj<typeof FakeIcon> = {
     template: `
       <div style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <FakeIcon icon="lucide:check" aria-label="Success checkmark" />
+          <FakeIcon icon="check" aria-label="Success checkmark" />
           <span>Task completed</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <FakeIcon icon="lucide:x" aria-label="Error icon" color="#f56c6c" />
+          <FakeIcon icon="xmark" aria-label="Error icon" color="#f56c6c" />
           <span>Task failed</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px;">
-          <FakeIcon icon="lucide:info" aria-hidden="true" />
+          <FakeIcon icon="circle-info" aria-hidden="true" />
           <span>Information (decorative icon)</span>
         </div>
       </div>
