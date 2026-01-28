@@ -1,8 +1,9 @@
 <script setup lang='ts'>
 import type { ButtonEmits, ButtonInstance, ButtonProps } from './types'
 import { throttle } from 'lodash-es'
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import FakeIcon from '../Icon/Icon.vue'
+import { BUTTON_GROUP_CTX_KEY } from './constants'
 
 defineOptions({
   name: 'FakeButton',
@@ -19,15 +20,27 @@ const emit = defineEmits<ButtonEmits>()
 
 const slots = defineSlots()
 
+const ctx = inject(BUTTON_GROUP_CTX_KEY, void 0)
 const _ref = ref<HTMLButtonElement>()
+
+const size = computed(() => ctx?.size ?? props?.size ?? '')
+const type = computed(() => ctx?.type ?? props?.type ?? '')
+const disabled = computed(() => ctx?.disabled || props?.disabled || false)
 const iconStyle = computed(() => ({
   marginRight: slots.default ? '6px' : '0px',
 }))
+
 function handleClick(e: MouseEvent) {
   emit('click', e)
 }
 
-const handleThrottleClick = throttle(handleClick, props.throttleDelay)
+const handleThrottleClick = throttle(
+  handleClick,
+  props.throttleDelay,
+  {
+    trailing: false,
+  },
+)
 
 defineExpose<ButtonInstance>({
   ref: _ref,
@@ -48,6 +61,7 @@ defineExpose<ButtonInstance>({
       'is-plain': plain,
       'is-round': round,
       'is-circle': circle,
+      'is-disabled': disabled,
       'is-loading': loading,
     }"
     @click="(e: MouseEvent) => useThrottle ? handleThrottleClick(e) : handleClick(e)"

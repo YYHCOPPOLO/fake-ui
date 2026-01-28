@@ -1,6 +1,7 @@
 .fake-button-group {
   --fake-button-group-border-color: var(--fake-border-color-lighter);
 }
+
 .fake-button {
   --fake-button-font-weight: var(--fake-font-weight-primary);
   --fake-button-border-color: var(--fake-border-color);
@@ -198,3 +199,4 @@
     }
   }
 }
+

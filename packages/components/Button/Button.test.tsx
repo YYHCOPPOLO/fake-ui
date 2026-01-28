@@ -1,170 +1,254 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
+
+import Icon from '../Icon/Icon.vue'
 import Button from './Button.vue'
+import ButtonGroup from './ButtonGroup.vue'
 
-describe('fake-button', () => {
-  describe('基础渲染', () => {
-    it('应该正确渲染默认按钮', () => {
-      const wrapper = mount(Button)
-      expect(wrapper.find('.fake-button').exists()).toBe(true)
-      expect(wrapper.find('button').exists()).toBe(true)
-    })
-
-    it('应该正确渲染插槽内容', () => {
+describe('button.vue', () => {
+  // Props: type
+  it('should has the correct type class when type prop is set', () => {
+    const types = ['primary', 'success', 'warning', 'danger', 'info']
+    types.forEach((type) => {
       const wrapper = mount(Button, {
-        slots: { default: '点击我' },
+        props: { type: type as any },
       })
-      expect(wrapper.html()).toContain('点击我')
-    })
-
-    it('默认 nativeType 应该是 button', () => {
-      const wrapper = mount(Button)
-      expect(wrapper.find('button').attributes('type')).toBe('button')
+      expect(wrapper.classes()).toContain(`fake-button--${type}`)
     })
   })
 
-  describe('按钮类型', () => {
-    it.each([
-      'primary',
-      'success',
-      'danger',
-      'warning',
-      'info',
-    ] as const)('应该正确渲染 %s 类型按钮', (type) => {
+  // Props: size
+  it('should has the correct size class when size prop is set', () => {
+    const sizes = ['large', 'default', 'small']
+    sizes.forEach((size) => {
       const wrapper = mount(Button, {
-        props: { type },
+        props: { size: size as any },
       })
-      expect(wrapper.find('.fake-button').classes()).toContain(`fake-button--${type}`)
+      expect(wrapper.classes()).toContain(`fake-button--${size}`)
     })
   })
 
-  describe('按钮尺寸', () => {
-    it.each([
-      'large',
-      'default',
-      'small',
-    ] as const)('应该正确渲染 %s 尺寸按钮', (size) => {
+  // Props: plain, round, circle
+  it.each([
+    ['plain', 'is-plain'],
+    ['round', 'is-round'],
+    ['circle', 'is-circle'],
+    ['disabled', 'is-disabled'],
+    ['loading', 'is-loading'],
+  ])(
+    'should has the correct class when prop %s is set to true',
+    (prop, className) => {
       const wrapper = mount(Button, {
-        props: { size },
-      })
-      expect(wrapper.find('.fake-button').classes()).toContain(`fake-button--${size}`)
-    })
-  })
-
-  describe('按钮状态', () => {
-    it('禁用状态应该设置 disabled 属性', () => {
-      const wrapper = mount(Button, {
-        props: { disabled: true },
-      })
-      expect(wrapper.find('button').attributes('disabled')).toBeDefined()
-    })
-
-    it('加载状态应该设置 disabled 属性', () => {
-      const wrapper = mount(Button, {
-        props: { loading: true },
-      })
-      expect(wrapper.find('button').attributes('disabled')).toBeDefined()
-    })
-
-    it('加载状态应该添加 is-loading 类名', () => {
-      const wrapper = mount(Button, {
-        props: { loading: true },
-      })
-      expect(wrapper.find('.fake-button').classes()).toContain('is-loading')
-    })
-  })
-
-  describe('样式变体', () => {
-    it('plain 属性应该添加 is-plain 类名', () => {
-      const wrapper = mount(Button, {
-        props: { plain: true },
-      })
-      expect(wrapper.find('.fake-button').classes()).toContain('is-plain')
-    })
-
-    it('round 属性应该添加 is-round 类名', () => {
-      const wrapper = mount(Button, {
-        props: { round: true },
-      })
-      expect(wrapper.find('.fake-button').classes()).toContain('is-round')
-    })
-
-    it('circle 属性应该添加 is-circle 类名', () => {
-      const wrapper = mount(Button, {
-        props: { circle: true },
-      })
-      expect(wrapper.find('.fake-button').classes()).toContain('is-circle')
-    })
-  })
-
-  describe('自定义标签', () => {
-    it('应该支持渲染为 a 标签', () => {
-      const wrapper = mount(Button, {
-        props: { tag: 'a' },
-      })
-      expect(wrapper.find('a.fake-button').exists()).toBe(true)
-      expect(wrapper.find('a').attributes('type')).toBeUndefined()
-    })
-
-    it('应该支持渲染为自定义组件', () => {
-      const CustomComponent = {
-        template: '<div class="custom"><slot /></div>',
-      }
-      const wrapper = mount(Button, {
-        props: { tag: CustomComponent },
-      })
-      expect(wrapper.find('.custom').exists()).toBe(true)
-    })
-  })
-
-  describe('交互行为', () => {
-    it('应该响应点击事件', async () => {
-      const onClick = vi.fn()
-      const wrapper = mount(Button, {
-        props: { onClick },
-      })
-      await wrapper.find('button').trigger('click')
-      expect(onClick).toHaveBeenCalledTimes(1)
-    })
-
-    it('禁用状态下不应触发点击事件', async () => {
-      const onClick = vi.fn()
-      const wrapper = mount(Button, {
-        props: {
-          disabled: true,
-          onClick,
+        props: { [prop]: true },
+        global: {
+          stubs: ['FakeIcon'],
         },
       })
-      await wrapper.find('button').trigger('click')
-      expect(onClick).not.toHaveBeenCalled()
+      expect(wrapper.classes()).toContain(className)
+    },
+  )
+
+  it('should has the correct native type attribute when native-type prop is set', () => {
+    const wrapper = mount(Button, {
+      props: { nativeType: 'submit' },
+    })
+    expect(wrapper.element.tagName).toBe('BUTTON')
+    expect((wrapper.element as any).type).toBe('submit')
+  })
+
+  // Test the click event with and without throttle
+  it.each([
+    ['withoutThrottle', false],
+    ['withThrottle', true],
+  ])('emits click event %s', async (_, useThrottle) => {
+    const clickSpy = vi.fn()
+    const wrapper = mount(() => (
+      <Button
+        onClick={clickSpy}
+        {...{
+          useThrottle,
+          throttleDuration: 400,
+        }}
+      />
+    ))
+
+    await wrapper.get('button').trigger('click')
+    await wrapper.get('button').trigger('click')
+    await wrapper.get('button').trigger('click')
+    expect(clickSpy).toBeCalledTimes(useThrottle ? 1 : 3)
+  })
+
+  // Props: tag
+  it('should renders the custom tag when tag prop is set', () => {
+    const wrapper = mount(Button, {
+      props: { tag: 'a' },
+    })
+    expect(wrapper.element.tagName.toLowerCase()).toBe('a')
+  })
+
+  // Events: click
+  it('should emits a click event when the button is clicked', async () => {
+    const wrapper = mount(Button, {})
+    await wrapper.trigger('click')
+    expect(wrapper.emitted().click).toHaveLength(1)
+  })
+
+  // Exception Handling: loading state
+  it('should display loading icon and not emit click event when button is loading', async () => {
+    const wrapper = mount(Button, {
+      props: { loading: true },
+      global: {
+        stubs: ['FakeIcon'],
+      },
+    })
+    const iconElement = wrapper.findComponent(Icon)
+
+    expect(wrapper.find('.loading-icon').exists()).toBe(true)
+    expect(iconElement.exists()).toBeTruthy()
+    expect(iconElement.attributes('icon')).toBe('spinner')
+    await wrapper.trigger('click')
+    expect(wrapper.emitted('click')).toBeUndefined()
+  })
+
+  const onClick = vi.fn()
+  it('basic button', async () => {
+    const wrapper = mount(() => (
+      <Button type="primary" {...{ onClick }}>
+        button content
+      </Button>
+    ))
+
+    // class
+    expect(wrapper.classes()).toContain('fake-button--primary')
+
+    // slot
+    expect(wrapper.get('button').text()).toBe('button content')
+
+    // events
+    await wrapper.get('button').trigger('click')
+    expect(onClick).toHaveBeenCalledOnce()
+  })
+
+  it('disabled button', async () => {
+    const wrapper = mount(() => (
+      <Button disabled {...{ onClick }}>
+        disabled button
+      </Button>
+    ))
+
+    // class
+    expect(wrapper.classes()).toContain('is-disabled')
+
+    // attrs
+    expect(wrapper.attributes('disabled')).toBeDefined()
+    expect(wrapper.find('button').element.disabled).toBeTruthy()
+
+    // events
+    await wrapper.get('button').trigger('click')
+    expect(onClick).toHaveBeenCalledOnce()
+    expect(wrapper.emitted('click')).toBeUndefined()
+  })
+
+  it('loading button', () => {
+    const wrapper = mount(Button, {
+      props: {
+        loading: true,
+      },
+      slots: {
+        default: 'loading button',
+      },
+      global: {
+        stubs: ['FakeIcon'],
+      },
     })
 
-    it('加载状态下不应触发点击事件', async () => {
-      const onClick = vi.fn()
-      const wrapper = mount(Button, {
-        props: {
-          loading: true,
-          onClick,
-        },
-      })
-      await wrapper.find('button').trigger('click')
-      expect(onClick).not.toHaveBeenCalled()
+    // class
+    expect(wrapper.classes()).toContain('is-loading')
+
+    // attrs
+    expect(wrapper.attributes('disabled')).toBeDefined()
+    expect(wrapper.find('button').element.disabled).toBeTruthy()
+
+    // events
+    wrapper.get('button').trigger('click')
+    expect(wrapper.emitted()).not.toHaveProperty('click')
+
+    // icon
+    const iconElement = wrapper.findComponent(Icon)
+    expect(iconElement.exists()).toBeTruthy()
+    expect(iconElement.attributes('icon')).toBe('spinner')
+  })
+
+  it('icon button', () => {
+    const wrapper = mount(Button, {
+      props: {
+        icon: 'arrow-up',
+      },
+      slots: {
+        default: 'icon button',
+      },
+      global: {
+        stubs: ['FakeIcon'],
+      },
+    })
+
+    const iconElement = wrapper.findComponent(Icon)
+    expect(iconElement.exists()).toBeTruthy()
+    expect(iconElement.attributes('icon')).toBe('arrow-up')
+  })
+})
+
+describe('buttonGroup.vue', () => {
+  it('basic button group', async () => {
+    const wrapper = mount(() => (
+      <ButtonGroup>
+        <Button>button 1</Button>
+        <Button>button 2</Button>
+      </ButtonGroup>
+    ))
+
+    expect(wrapper.classes()).toContain('fake-button-group')
+  })
+
+  it('button group size', () => {
+    const sizes = ['large', 'default', 'small']
+    sizes.forEach((size) => {
+      const wrapper = mount(() => (
+        <ButtonGroup size={size as any}>
+          <Button>button 1</Button>
+          <Button>button 2</Button>
+        </ButtonGroup>
+      ))
+
+      const buttonWrapper = wrapper.findComponent(Button)
+      expect(buttonWrapper.classes()).toContain(`fake-button--${size}`)
     })
   })
 
-  describe('nativeType 属性', () => {
-    it('应该正确设置 submit 类型', () => {
-      const wrapper = mount(Button, {
-        props: { nativeType: 'submit' },
-      })
-      expect(wrapper.find('button').attributes('type')).toBe('submit')
-    })
+  it('button group type', () => {
+    const types = ['primary', 'success', 'warning', 'danger', 'info']
+    types.forEach((type) => {
+      const wrapper = mount(() => (
+        <ButtonGroup type={type as any}>
+          <Button>button 1</Button>
+          <Button>button 2</Button>
+        </ButtonGroup>
+      ))
 
-    it('应该正确设置 reset 类型', () => {
-      const wrapper = mount(Button, {
-        props: { nativeType: 'reset' },
-      })
-      expect(wrapper.find('button').attributes('type')).toBe('reset')
+      const buttonWrapper = wrapper.findComponent(Button)
+      expect(buttonWrapper.classes()).toContain(`fake-button--${type}`)
     })
+  })
+
+  it('button group disabled', () => {
+    const wrapper = mount(() => (
+      <ButtonGroup disabled>
+        <Button>button 1</Button>
+        <Button>button 2</Button>
+      </ButtonGroup>
+    ))
+
+    const buttonWrapper = wrapper.findComponent(Button)
+    expect(buttonWrapper.classes()).toContain(`is-disabled`)
   })
 })
