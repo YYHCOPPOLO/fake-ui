@@ -28,6 +28,7 @@ export interface IconProps {
     | '8x'
     | '9x'
     | '10x'
+    | string  // 支持 CSS 单位如 "2em", "16px", "1.5rem" 等
   spin?: boolean
   transform?: object | string
   symbol?: boolean | string

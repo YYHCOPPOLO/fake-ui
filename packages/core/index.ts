@@ -8,5 +8,5 @@ import '@fake-ui/theme/index.css'
 library.add(fas)
 const installer = installerMaker(components)
 
-export * from '@fake-ui/components'
+export * from '../components'
 export default installer

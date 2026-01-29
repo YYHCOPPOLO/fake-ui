@@ -57,12 +57,6 @@ export default defineConfig({
             return 'utils'
           }
 
-          // Button 和 Icon 存在循环依赖（Button.vue 直接导入 Icon.vue）
-          // 将它们合并到同一个 chunk 中避免初始化顺序问题
-          if (id.includes('/packages/components/Button') || id.includes('/packages/components/Icon')) {
-            return 'Button'
-          }
-
           for (const dirName of getDirectoiresSync('../components')) {
             if (id.includes(`/packages/components/${dirName}`)) {
               return dirName

@@ -10,8 +10,29 @@ defineOptions({
 })
 
 const props = defineProps<IconProps>()
-const filterProps = computed(() => omit(props, ['type', 'color']))
-const customStyles = computed(() => ({ color: props.color ?? void 0 }))
+
+// 检测是否为 CSS 单位格式（包含数字和单位）
+function isCssSize(size: string | undefined): boolean {
+  if (!size) return false
+  // 匹配数字后跟单位的模式，如 "2em", "1.5rem", "16px" 等
+  return /^\d+(?:\.\d+)?(?:px|em|rem|%|ch|ex|vw|vh|vmin|vmax|cm|mm|in|pt|pc)$/.test(size)
+}
+
+// 过滤传递给 FontAwesome 的 props
+const filterProps = computed(() => {
+  const filtered = omit(props, ['type', 'color', 'size']) as Omit<IconProps, 'type' | 'color' | 'size'>
+  // 如果 size 不是 CSS 单位格式，则传递给 FontAwesome
+  if (props.size && !isCssSize(props.size)) {
+    (filtered as any).size = props.size
+  }
+  return filtered
+})
+
+// 计算样式，包含 color 和可能的 fontSize
+const customStyles = computed(() => ({
+  color: props.color ?? void 0,
+  fontSize: isCssSize(props.size) ? props.size : void 0,
+}))
 </script>
 
 <template>
@@ -27,6 +48,6 @@ const customStyles = computed(() => ({ color: props.color ?? void 0 }))
   </i>
 </template>
 
-<style scoped>
+<style>
 @import './style.css';
 </style>
