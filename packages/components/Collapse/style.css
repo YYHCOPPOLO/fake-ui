@@ -1,0 +1,58 @@
+.fake-collapse {
+  --fake-collapse-border-color: var(--fake-border-color-light);
+  --fake-collapse-header-height: 48px;
+  --fake-collapse-header-bg-color: var(--fake-fill-color-blank);
+  --fake-collapse-header-text-color: var(--fake-text-color-primary);
+  --fake-collapse-header-font-size: 13px;
+  --fake-collapse-content-bg-color: var(--fake-fill-color-blank);
+  --fake-collapse-content-font-size: 13px;
+  --fake-collapse-content-text-color: var(--fake-text-color-primary);
+  --fake-collapse-disabled-text-color: var(--fake-disabled-text-color);
+  --fake-collapse-disabled-border-color: var(--fake-border-color-lighter);
+  border-top: 1px solid var(--fake-collapse-border-color);
+  border-bottom: 1px solid var(--fake-collapse-border-color);
+}
+
+.fake-collapse-item__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--fake-collapse-header-height);
+  line-height: var(--fake-collapse-header-height);
+  background-color: var(--fake-collapse-header-bg-color);
+  color: var(--fake-collapse-header-text-color);
+  cursor: pointer;
+  font-size: var(--fake-collapse-header-font-size);
+  font-weight: 500;
+  transition: border-bottom-color var(--fake-transition-duration);
+  outline: none;
+  border-bottom: 1px solid var(--fake-collapse-border-color);
+  &.is-disabled {
+    color: var(--fake-collapse-disabled-text-color);
+    cursor: not-allowed;
+    background-image: none;
+  }
+  &.is-active {
+    border-bottom-color: transparent;
+    .header-angle {
+      transform: rotate(90deg);
+    }
+  }
+  .header-angle {
+    transition: transform var(--fake-transition-duration);
+  }
+}
+.fake-collapse-item__content {
+  will-change: height;
+  background-color: var(--fake-collapse-content-bg-color);
+  overflow: hidden;
+  box-sizing: border-box;
+  font-size: var(--fake-collapse-content-font-size);
+  color: var(--fake-collapse-content-text-color);
+  border-bottom: 1px solid var(--fake-collapse-border-color);
+  padding-bottom: 25px;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: height var(--fake-transition-duration) ease-in-out;
+}
