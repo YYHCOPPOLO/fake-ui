@@ -1,6 +1,7 @@
 import type { Plugin } from 'vue'
 
 import {
+  FakeAlert,
   FakeButton,
   FakeButtonGroup,
   FakeCollapse,
@@ -14,4 +15,5 @@ export default [
   FakeIcon,
   FakeCollapse,
   FakeCollapseItem,
+  FakeAlert
 ] as Plugin[]

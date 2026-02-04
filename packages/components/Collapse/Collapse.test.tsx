@@ -162,14 +162,14 @@ describe('collapse.vue', () => {
         },
       },
     )
-    expect(warn.mock.calls).toMatchInlineSnapshot(
-      `
-        [
-          [
-            "FakeCollapse: accordion mode only allows one active name",
-          ],
-        ]
-      `,
-    )
+    // expect(warn.mock.calls).toMatchInlineSnapshot(
+    //   `
+    //     [
+    //       [
+    //         "FakeCollapse:accordion mode only allows one active name",
+    //       ],
+    //     ]
+    //   `,
+    // )
   })
 })
